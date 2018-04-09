@@ -1,30 +1,3 @@
-# [webpack](https://www.webpackjs.com/)
-> webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。当 webpack 处理应用程序时，它会递归地构建一个依赖关系图(dependency graph)，其中包含应用程序需要的每个模块，然后将所有这些模块打包成一个或多个 bundle。[引用来自于webpack官网](hhttps://www.webpackjs.com/concepts/)
-
-Webpack有一个不可不说的优点，它把所有的文件都都当做模块处理，JavaScript代码，CSS和fonts以及图片等等通过合适的loader都可以被处理。
-
-### 四个核心概念
-> 它是高度可配置的，但是，在开始前你需要先理解四个核心概念：
-- [入口(entry)](https://www.webpackjs.com/concepts/#%E5%85%A5%E5%8F%A3-entry-)
-- [输出(output)](https://www.webpackjs.com/concepts/#%E5%87%BA%E5%8F%A3-output-)
-- [loader](https://www.webpackjs.com/concepts/#loader)
-- [插件(plugins)](https://www.webpackjs.com/concepts/#%E6%8F%92%E4%BB%B6-plugins-)
-
-### 入门文章
-> [入门 Webpack，看这篇就够了](https://segmentfault.com/a/1190000006178770)。在此向原作者[zhangwang](https://segmentfault.com/u/zhangwang)致谢，每次看这篇文章都有不同的感悟。
-
-webpack升级到4.0.1以上，执行webpack命令报错：
-```
-The CLI moved into a separate package: webpack-cli.
-Please install 'webpack-cli' in addition to webpack itself to use the CLI.
-```
-
-这时候需要全局及本地项目安装webpack-cli便可。
-
-### gulp的插件使用
-> 下面附上自己写的简单的一个webpack.config.js文件，希望对你的开发能有帮助。
-
-```js
 const webpack = require('webpack');// 引入webpack，为了插件引入方法
 const path = require('path');      // 引入path，提供了一些工具函数，用于处理文件与目录的路径
 
@@ -102,23 +75,3 @@ module.exports = {
   }
 };
 
-
-```
-> 对应的package.json
-
-```
-{
-  "devDependencies": {
-    "css-loader": "^0.28.11",
-    "less": "^3.0.1",
-    "less-loader": "^4.1.0",
-    "style-loader": "^0.20.3",
-    "webpack-dev-server": "^3.1.3"
-  },
-  "scripts": {
-    "start": "webpack",
-    "server": "webpack-dev-server --open"
-  }
-}
-
-```
