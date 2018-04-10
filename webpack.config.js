@@ -50,12 +50,29 @@ module.exports = {
 	          }
 	        ]
 	    },
+      // less编译
       {
         test: /\.less$/,
         use: [
-          'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          'less-loader'
+          'style-loader',// 将css插入到页面的style标签 
+          { loader: 'css-loader', options: { importLoaders: 1 } },// 用类似@import 和 url(...)的方法实现 require()的功能
+          'less-loader'// less编译
+        ]
+      },
+      // 加载图片文件为"Base64编码"的URL
+      // 当超过limit时候自动使用file-loader编译
+      // 可用于import图片或者less/css图片
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192     // 大小限制（以字节为单位）
+              // mimetype:''  // 为文件指定MIME类型（否则从文件扩展名推断）。默认为extname  
+              // fallback:''  // 当文件大于限制时指定文件的默认使用file-loader（以字节为单位）
+            }
+          }
         ]
       }
     ]

@@ -3,6 +3,10 @@
 
 Webpack有一个不可不说的优点，它把所有的文件都都当做模块处理，JavaScript代码，CSS和fonts以及图片等等通过合适的loader都可以被处理。
 
+### 相关资料
+- [webpack教程 阮一峰](https://github.com/ruanyf/webpack-demos)
+- [webpack入门](https://segmentfault.com/a/1190000006178770)
+
 ### 四个核心概念
 > 它是高度可配置的，但是，在开始前你需要先理解四个核心概念：
 - [入口(entry)](https://www.webpackjs.com/concepts/#%E5%85%A5%E5%8F%A3-entry-)
@@ -10,18 +14,17 @@ Webpack有一个不可不说的优点，它把所有的文件都都当做模块�
 - [loader](https://www.webpackjs.com/concepts/#loader)
 - [插件(plugins)](https://www.webpackjs.com/concepts/#%E6%8F%92%E4%BB%B6-plugins-)
 
-### 入门文章
-> [入门 Webpack，看这篇就够了](https://segmentfault.com/a/1190000006178770)。在此向原作者[zhangwang](https://segmentfault.com/u/zhangwang)致谢，每次看这篇文章都有不同的感悟。
+### 相关报错处理
 
 webpack升级到4.0.1以上，执行webpack命令报错：
 ```
 The CLI moved into a separate package: webpack-cli.
 Please install 'webpack-cli' in addition to webpack itself to use the CLI.
 ```
-
 这时候需要全局及本地项目安装webpack-cli便可。
 
-### gulp的插件使用
+
+### webpack的插件使用
 > 下面附上自己写的简单的一个webpack.config.js文件，希望对你的开发能有帮助。
 
 ```js
@@ -35,8 +38,8 @@ module.exports = {
     main: './src/main.js'
   },// 传入数组
   output: {
-    filename: 'bundle.js', 	// 整合成单个的模块
-    // filename: '[name].js',		// 输出对应的名字的js
+    filename: 'bundle.js',  // 整合成单个的模块
+    // filename: '[name].js',   // 输出对应的名字的js
     path: __dirname + '/static' // 输出路径
   },
   // Loader引入，在 import 或"加载"模块时预处理文件
@@ -54,16 +57,16 @@ module.exports = {
           ],
           exclude: /node_modules/ // exclude 表示哪些目录中的 .js 文件不要进行 babel-loader
       },
-    	{
-	      	test: /\.css$/, // 匹配正则规则，遇到css时候
-	        use: [
-	          // style-loader将所有的计算后的样式加入页面中
+      {
+          test: /\.css$/, // 匹配正则规则，遇到css时候
+          use: [
+            // style-loader将所有的计算后的样式加入页面中
             // style-loader 将css插入到页面的style标签 
-	          { loader: 'style-loader' },
-	          // css-loader使你能够使用类似@import 和 url(...)的方法实现 require()的功能
-	          {
-	            loader: 'css-loader',
-	            options: {
+            { loader: 'style-loader' },
+            // css-loader使你能够使用类似@import 和 url(...)的方法实现 require()的功能
+            {
+              loader: 'css-loader',
+              options: {
                 modules:true
                 // root: /, // 解析 URLs 路径, URLs 以 / 开头将不会被翻译
                 // modules:false, // 启用/禁用 css-modules 模式
@@ -73,16 +76,33 @@ module.exports = {
                 // sourceMap:false, // 启用/禁用 Sourcemaps // 必须开启devtool的 'source-map' 或者 'inline-source-map'
                 // camelCase:false, // 导出以驼峰化命名的类名
                 // importLoaders:0 // 在 css-loader 前应用的 loader 的数
-	            }
-	          }
-	        ]
-	    },
+              }
+            }
+          ]
+      },
+      // less编译
       {
         test: /\.less$/,
         use: [
-          'style-loader',
-          { loader: 'css-loader', options: { importLoaders: 1 } },
-          'less-loader'
+          'style-loader',// 将css插入到页面的style标签 
+          { loader: 'css-loader', options: { importLoaders: 1 } },// 用类似@import 和 url(...)的方法实现 require()的功能
+          'less-loader'// less编译
+        ]
+      },
+      // 加载图片文件为"Base64编码"的URL
+      // 当超过limit时候自动使用file-loader编译
+      // 可用于import图片或者less/css图片
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192     // 大小限制（以字节为单位）
+              // mimetype:''  // 为文件指定MIME类型（否则从文件扩展名推断）。默认为extname  
+              // fallback:''  // 当文件大于限制时指定文件的默认使用file-loader（以字节为单位）
+            }
+          }
         ]
       }
     ]
@@ -102,7 +122,6 @@ module.exports = {
   }
 };
 
-
 ```
 > 对应的package.json
 
@@ -110,9 +129,12 @@ module.exports = {
 {
   "devDependencies": {
     "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
     "less": "^3.0.1",
     "less-loader": "^4.1.0",
     "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
+    "webpack": "4.5.0",
     "webpack-dev-server": "^3.1.3"
   },
   "scripts": {
